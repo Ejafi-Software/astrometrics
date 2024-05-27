@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <UserSecretsId>6ab1b154-68a1-46a5-9d48-32a0b486db86</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Ejafi.Astrometrics.ServiceDefaults\Ejafi.Astrometrics.ServiceDefaults.csproj"/>
+        <ProjectReference Include="..\Ejafi.Astrometrics.Shared\Ejafi.Astrometrics.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Aspire.Npgsql" Version="8.0.0-preview.7.24251.11" />
+      <PackageReference Include="Humanizer" Version="3.0.0-beta.13" />
+      <PackageReference Include="Radzen.Blazor" Version="4.31.3" />
+    </ItemGroup>
+
+</Project>

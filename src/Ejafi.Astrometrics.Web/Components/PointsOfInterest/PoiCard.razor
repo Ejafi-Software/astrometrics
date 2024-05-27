@@ -1,0 +1,54 @@
+﻿@using Ejafi.Astrometrics.Shared
+
+<RadzenCard class="poi-card">
+    <!-- POI Name -->
+    <RadzenRow AlignItems="AlignItems.Center" class="@_poiBgStyle" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack>
+            <RadzenText class="poi-name rz-text-truncate">@Poi.Name</RadzenText>
+            <RadzenText class="poi-name poi-sector">Sector: @Poi.Sector</RadzenText>
+        </RadzenStack>
+        @if (Poi.IsPopulated)
+        {
+            <RadzenPanel Icon="people" IconColor="@Colors.WarningLighter"/>
+        }
+    </RadzenRow>
+
+    <!-- Coords -->
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenColumn Size="12">
+            <PoiCoordinates Poi="@Poi" />
+        </RadzenColumn>
+        <RadzenColumn Size="12">
+            <PoiDistance Poi="@Poi" />
+        </RadzenColumn>
+    </RadzenRow>
+
+    <PoiNotes Poi="@Poi" />
+</RadzenCard>
+
+@code {
+    [Parameter] public required PointOfInterest Poi { get; init; }
+
+    private string _poiBgStyle = string.Empty;
+
+    protected override void OnInitialized() {
+        UpdateCardElements();
+    }
+
+    private void UpdateCardElements() {
+        _poiBgStyle = GetPoiBgStyle(Poi.Type);
+    }
+
+    private const string BasePoiClass = "poi-name-container poi";
+    private string GetPoiBgStyle(PoiType poiType) {
+        return poiType switch {
+            PoiType.Earthlike => $"{BasePoiClass} poi-earthlike",
+            PoiType.GasGiant => $"{BasePoiClass} poi-gasgiant",
+            PoiType.BlackHole => $"{BasePoiClass} poi-blackhole",
+            PoiType.Nebula => $"{BasePoiClass} poi-nebula",
+            PoiType.Silicate => $"{BasePoiClass} poi-silicate",
+            PoiType.Star => $"{BasePoiClass} poi-star",
+            _ => $"{BasePoiClass} poi-night"
+        };
+    }
+}

@@ -1,0 +1,21 @@
+﻿@using Ejafi.Astrometrics.Shared
+
+@if (Poi is not null)
+{
+    <RadzenRow>
+        <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.NoWrap" class="poi-coordinates-bg">
+            <div class="poi-coordinates-icon galactic"></div>
+            <RadzenText class="poi-coordinates galactic">@Poi.Coordinate.Galactic</RadzenText>
+        </RadzenStack>
+    </RadzenRow>
+    <RadzenRow>
+        <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.NoWrap" class="poi-coordinates-bg">
+            <div class="poi-coordinates-icon local"></div>
+            <RadzenText class="poi-coordinates local">@Poi.Coordinate.Local</RadzenText>
+        </RadzenStack>
+    </RadzenRow>
+}
+
+@code {
+    [Parameter] public PointOfInterest? Poi { get; set; }
+}

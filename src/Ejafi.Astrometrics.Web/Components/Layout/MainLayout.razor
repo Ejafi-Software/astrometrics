@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+
+<RadzenComponents/>
+<RadzenLayout>
+    <RadzenHeader class="rz-py-4 astro-header-bg">
+        <RadzenRow class="astro-header-title" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+                <RadzenImage Path="logo.png" class="astro-header-logo"/>
+                <RadzenText TextStyle="TextStyle.DisplayH2" Class="wide-spacing rz-mb-0 astro-header-title-text">Astrometrics</RadzenText>
+            </RadzenStack>
+            <a href="https://starshipsimulator.co.uk/" class="astro-header-sslink" target="_blank" >
+                <RadzenImage class="astro-header-sslink" Path="assets/img/ss-logo.png" />
+            </a>
+        </RadzenRow>
+        <NavMenu />
+    </RadzenHeader>
+
+    <RadzenBody>
+        @Body
+    </RadzenBody>
+</RadzenLayout>

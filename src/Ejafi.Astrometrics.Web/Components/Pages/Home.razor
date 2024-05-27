@@ -1,0 +1,67 @@
+﻿@page "/"
+@using Ejafi.Astrometrics.Shared
+@using Ejafi.Astrometrics.Web.Components.PointsOfInterest
+@using Ejafi.Astrometrics.Web.Services.PointsOfInterest
+@inject IPointsOfInterestService PoiService
+
+@if (_pois.Any())
+{
+    <PoiCardList Pois="@_pois" />
+}
+else
+{
+    <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
+        <div class="poi-empty"></div>
+        <RadzenText TextStyle="TextStyle.H4" TextAlign="TextAlign.Center">
+            Couldn't find any points of interest. Let's add some!
+        </RadzenText>
+    </RadzenStack>
+}
+
+@code
+{
+    private IEnumerable<PointOfInterest> _pois = [];
+    private PoiFilter _currentFilter = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        PoiService.PoiAddedAsync += PoiServiceOnPoiAdded;
+        PoiService.PoiFilterChangedAsync += PoiServiceOnPoiFilterChangedAsync;
+        PoiService.PoiFilterClearedAsync += PoiServiceOnPoiFilterClearedAsync;
+        _pois = await PoiService.GetAllPoisAsync();
+    }
+
+    private Task PoiServiceOnPoiFilterClearedAsync()
+    {
+        return ClearPoiFilter();
+    }
+
+    private Task PoiServiceOnPoiFilterChangedAsync(PoiFilter arg)
+    {
+        _currentFilter = arg;
+        return SetPoiFilter();
+    }
+
+    public void Dispose()
+    {
+        PoiService.PoiAddedAsync -= PoiServiceOnPoiAdded;
+        PoiService.PoiFilterChangedAsync -= PoiServiceOnPoiFilterChangedAsync;
+        PoiService.PoiFilterClearedAsync -= PoiServiceOnPoiFilterClearedAsync;
+    }
+
+    private async Task PoiServiceOnPoiAdded(PointOfInterest obj)
+    {
+        _pois = await PoiService.GetFilteredPoisAsync(_currentFilter);
+        StateHasChanged();
+    }
+    private async Task SetPoiFilter()
+    {
+        _pois = await PoiService.GetFilteredPoisAsync(_currentFilter);
+        StateHasChanged();
+    }
+    private async Task ClearPoiFilter()
+    {
+        _currentFilter = new PoiFilter();
+        await SetPoiFilter();
+    }
+}

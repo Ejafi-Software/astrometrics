@@ -1,0 +1,8 @@
+.azure
+.idea
+
+bin/
+obj/
+
+*.user
+*.[Ll]ocal.json

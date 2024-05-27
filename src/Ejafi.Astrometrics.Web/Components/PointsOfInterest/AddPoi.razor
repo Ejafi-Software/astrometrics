@@ -1,0 +1,82 @@
+﻿@using Ejafi.Astrometrics.Shared
+@using Ejafi.Astrometrics.Web.Components.Spatial
+@using Ejafi.Astrometrics.Web.Services.PointsOfInterest
+
+@inject IPointsOfInterestService PoiService
+@inject DialogService DialogService
+
+<RadzenRow Gap="1rem">
+    <RadzenTemplateForm TItem="PointOfInterest" Data="@_poi" Submit="@OnSubmit" class="w-100 ">
+        <!-- POI Name -->
+        <RadzenRow class="mb-4 poi-add-name" AlignItems="AlignItems.Center">
+            <RadzenFormField Variant="Variant.Outlined" Text="Name" class="w-100 poi-name">
+                <RadzenTextBox @bind-Value="@_poi.Name" Name="PoiName" class="poi-name w-100" />
+            </RadzenFormField>
+        </RadzenRow>
+
+        <RadzenRow class="rz-m-4" JustifyContent="JustifyContent.SpaceBetween">
+            <!-- POI Galactic Coords -->
+            <CoordinateFormField TNumber="long" Coordinate="@_poi.Coordinate" FieldLabel="Galactic Coordinate" />
+
+            <!-- POI Type -->
+            <RadzenRow class="mb-4 w-100">
+                <RadzenFormField Variant="Variant.Filled" Text="Type">
+                    <RadzenDropDown @bind-Value="@_poi.Type" Data="@GetValidPoiTypes()"/>
+                </RadzenFormField>
+                @if (_poi.Type == PoiType.Earthlike)
+                {
+                    <RadzenToggleButton Icon="group_off"
+                                        ButtonStyle="ButtonStyle.Danger"
+                                        ToggleIcon="group"
+                                        ToggleShade="Shade.Light"
+                                        ToggleButtonStyle="ButtonStyle.Success"
+                                        @bind-Value="@_poi.IsPopulated"
+                                        Style="width: auto; height: 100%; aspect-ratio: 1" />
+                }
+            </RadzenRow>
+
+            <!-- POI Notes -->
+            <RadzenRow class="mb-4 w-100">
+                <RadzenFormField Variant="Variant.Filled" Text="Notes" class="w-100">
+                    <RadzenTextArea @bind-Value="@_poi.Notes" Rows="4" class="w-100"/>
+                </RadzenFormField>
+            </RadzenRow>
+
+            <!-- Submit -->
+            <RadzenRow>
+                <RadzenButton ButtonType="ButtonType.Submit"
+                              Icon="add"
+                              Disabled="@(!_poi.IsValid())"
+                              Text="Add"/>
+                <RadzenButton ButtonType="ButtonType.Button"
+                              ButtonStyle="ButtonStyle.Dark"
+                              Icon="close"
+                              Text="Close"
+                              Click="@OnClose" />
+            </RadzenRow>
+        </RadzenRow>
+    </RadzenTemplateForm>
+</RadzenRow>
+
+@code {
+    private readonly PointOfInterest _poi = new () { Name = string.Empty };
+
+    private async Task OnSubmit()
+    {
+        if (_poi.Type != PoiType.Earthlike)
+        {
+            _poi.IsPopulated = false;
+        }
+
+        await PoiService.AddPoiAsync(_poi);
+    }
+
+    private void OnClose()
+    {
+        DialogService.Close();
+    }
+
+    private PoiType[] GetValidPoiTypes() => Enum.GetValues<PoiType>()
+        .Where(t => t != PoiType.All)
+        .ToArray();
+}

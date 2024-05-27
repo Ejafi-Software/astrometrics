@@ -1,0 +1,17 @@
+﻿@using Ejafi.Astrometrics.Shared
+
+@inject AstrometricsApiClient Api
+
+<RadzenRow>
+    @foreach (var poi in Pois)
+    {
+        <RadzenColumn SizeXS="12" SizeLG="6" SizeXL="3">
+            <PoiCard @key="@poi.Id" Poi="@poi"/>
+        </RadzenColumn>
+    }
+</RadzenRow>
+
+@code
+{
+    [Parameter] public IEnumerable<PointOfInterest> Pois { get; set; } = [];
+}

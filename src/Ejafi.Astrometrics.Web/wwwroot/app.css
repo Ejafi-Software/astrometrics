@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900');
+@font-face {
+    font-family: 'eurostile2';
+    src: url("assets/fonts/eurostile2.ttf");
+}
+
+/*******************************************************************
+ * Main Header styles
+ *******************************************************************/
+.astro-header-bg {
+    background:
+            url("assets/img/egg-shell.png") center center,
+            url("assets/img/deep-space-pano.jpg") no-repeat center center / cover;
+}
+.astro-header-logo {
+    width: 75px;
+    height: 75px;
+    margin: 1rem !important;
+}
+.astro-header-title {
+    backdrop-filter: blur(20px);
+    text-shadow: #1a1e21 1px 1px 1px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.astro-header-title-text {
+    font-family: "eurostile2",Jura,Helvetica,Arial,Lucida,sans-serif !important;
+    font-weight: 100;
+    font-variant-caps: petite-caps;
+}
+@media (width <= 576px) {
+    .astro-header-title {
+        padding-left: 0.25rem !important;
+        padding-right: 0.25rem !important;
+    }
+    .astro-header-title-text {
+        font-size: 1em !important;
+        letter-spacing: 0.2em !important;
+    }
+    .astro-header-logo {
+        width: 40px;
+        height: 40px;
+        margin-inline: 0.25rem !important;
+    }
+}
+@media (width <= 768px) {
+    .astro-header-title {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    .astro-header-title-text {
+        font-size: 1.5em !important;
+        letter-spacing: 0.4em !important;
+    }
+    .astro-header-logo {
+        width: 50px;
+        height: 50px;
+        margin-inline: 0.5rem !important;
+    }
+}
+
+.astro-header-sslink {
+    height: 100%;
+    width: 175px;
+    margin-right: 2rem;
+}
+
+@media (width <= 1020px) {
+    .astro-header-sslink {
+        display: none;
+    }
+}
+
+.astro-menu {
+    line-height: 2rem;
+    background: url("assets/img/egg-shell.png"), rgba(64, 32, 64, 0.5) !important;
+}
+
+.astro-menu-item {
+    border-radius: 0 !important;
+    background:
+            rgba(0, 0, 0, 0.0) !important;
+}
+
+.rz-navigation-item-wrapper:hover {
+    border-radius: 0 !important;
+    background: rgba(128, 96, 128, 0.4) !important;
+}
+
+/*******************************************************************
+ * Empty Point Of Interest Items
+ *******************************************************************/
+.poi-empty {
+    width: 25vw;
+    height: 25vh;
+    background: url("assets/img/add_location.svg") no-repeat center center;
+    background-size: contain;
+}
+
+/*******************************************************************
+ * Point Of Interest Items
+ *******************************************************************/
+.poi-card {
+    height: 100%;
+}
+.poi-card:hover {
+    filter: brightness(150%);
+}
+
+.poi-name-container {
+    padding: 1em;
+    margin: -11px -11px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    background-size: contain;
+}
+.poi-blackhole {
+    background:
+            url('assets/img/egg-shell.png'),
+            linear-gradient(to right, #141414 50%, transparent 75%),
+            url('assets/img/blackhole.webp') no-repeat right center / 50%;
+}
+.poi-earthlike {
+    background:
+            url('assets/img/egg-shell.png'),
+            linear-gradient(to right, #141414 50%, transparent 75%),
+            url('assets/img/earthlike2.webp') no-repeat right center / 50%;
+}
+.poi-silicate {
+    background:
+            url('assets/img/egg-shell.png'),
+            linear-gradient(to right, #141414 50%, transparent 75%),
+            url('assets/img/mars.webp') no-repeat right center / 50%;
+}
+.poi-gasgiant {
+    background:
+            url('assets/img/egg-shell.png'),
+            linear-gradient(to right, #141414 50%, transparent 75%),
+            url('assets/img/gas-giant.webp') no-repeat right center / 50%;
+}
+.poi-nebula {
+    background:
+            url('assets/img/egg-shell.png'),
+            linear-gradient(to right, #141414 50%, transparent 75%),
+            url('assets/img/nebula.webp') no-repeat right center / 50%;
+}
+.poi-star {
+    background:
+            url('assets/img/egg-shell.png'),
+            linear-gradient(to right, #141414 50%, transparent 75%),
+            url('assets/img/star.webp') no-repeat right center / 50%;
+}
+.poi-night {
+    background:
+            url('assets/img/egg-shell.png'),
+            linear-gradient(to right, #141414 50%, transparent 75%),
+            url('assets/img/night.webp') no-repeat right center / 50%;
+}
+
+/*******************************************************************
+ * POI Name Styling
+ *******************************************************************/
+.poi-name {
+    letter-spacing: 0.65rem;
+    font-family: "eurostile2", Jura, Helvetica, Arial, Lucida, sans-serif !important;
+    font-variant-caps: petite-caps;
+    font-weight: 200 !important;
+    text-shadow: #FFF 0 0 5px;
+    margin: 0 !important;
+}
+.poi-sector {
+    font-family: Saira, "JetBrains Mono", monospace !important;
+    letter-spacing: 0.4rem;
+    font-size: 0.85em !important;
+}
+.poi-coordinates-bg {
+    width: 100%;
+    letter-spacing: 0.1rem;
+    padding: 0.75rem 0.5rem;
+    background-blend-mode: multiply;
+    background:
+            url("assets/img/egg-shell.png"),
+            url("assets/img/green-dust-and-scratches.png"),
+            linear-gradient(to bottom, #141414 1px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 98%, #5b5b5b 99%),
+            rgba(255, 255, 255, 0.1);
+}
+.poi-coordinates {
+    font-family: Saira, "JetBrains Mono", monospace !important;
+    font-style: normal !important;
+    text-shadow: 0 1px rgba(0,0,0,0.75);
+    font-size: 1.25em !important;
+}
+.poi-coordinates.galactic {
+    color: #00bfff !important;
+}
+.poi-coordinates.local {
+    color: #ff88ee !important;
+}
+.poi-coordinates-icon {
+    background-size: contain;
+    width: 1rem;
+    min-width: 16px;
+    margin-left: 0.5rem;
+}
+.poi-coordinates-icon.galactic {
+    background: url("assets/img/solar.svg") no-repeat center center;
+}
+.poi-coordinates-icon.local {
+    background: url("assets/img/planet.svg") no-repeat center center;
+}
+
+/*******************************************************************
+ * POI Distance Component
+ *******************************************************************/
+.poi-distance-magnitude {
+    font-size: 0.95em !important;
+}
+.poi-distance-arrow {
+    margin: 0;
+    padding: 0;
+    display: inline;
+    width: 50px;
+    height: 16px;
+    background:
+            url("assets/img/green-dust-and-scratches.png") center center,
+            url("assets/img/distance-arrow.svg") no-repeat center center / cover;
+}
+.poi-distance-target {
+    color: #0dcaf0 !important;
+    font-size: 0.95em !important;
+    letter-spacing: 0.3rem !important;
+}
+
+/*******************************************************************
+ * Add New POI Form
+ *******************************************************************/
+.poi-add-name {
+    height: 100px;
+    padding: 1em;
+    background:
+            url('assets/img/egg-shell.png'),
+            linear-gradient(to right, #141414 50%, transparent 75%),
+            url('assets/img/holo-globe.png') no-repeat right center / 50%;
+}
+.poi-name .rz-form-field-content,
+.poi-name .rz-form-field-label
+{
+    outline: none !important;
+    border: none !important;
+    background: transparent !important;
+}
+.poi-name .rz-textbox {
+    outline: none !important;
+
+    border-bottom: 1px solid rgba(255,255,255,0.5) !important;
+    border-radius: 0;
+    background: transparent !important;
+
+    font-size: 1.5rem !important;
+    height: 2rem !important;
+}
+
+/*******************************************************************
+ * POI Filter Classes
+ *******************************************************************/
+.poi-dialog .rz-dialog-content {
+    padding: 0 !important;
+}
+.poi-filter-header {
+    background:
+            url('assets/img/egg-shell.png'),
+            linear-gradient(to right, #14141400, #14141400),
+            url('assets/img/nebula2.webp') no-repeat center center / cover;
+    height: 100px;
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.poi-filter-header-text {
+    color: #ffffff !important;
+    text-shadow: rgba(0,0,0,0.75) 0 1px 4px;
+    font-size: 2rem !important;
+    font-weight: 400 !important;
+    border-block: 1px solid #1a1e21;
+    width: 100%;
+    backdrop-filter: blur(50px) grayscale(15%);
+}
+.poi-filter-content {
+    padding: 1rem;
+}
+
+
+/*******************************************************************
+ * Utility Classes
+ *******************************************************************/
+.wide-spacing {
+    letter-spacing: 1rem;
+}
+
+h1:focus {
+    outline: none;
+}
+
+/*******************************************************************
+ * Form Validation
+ *******************************************************************/
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid #e52540;
+}

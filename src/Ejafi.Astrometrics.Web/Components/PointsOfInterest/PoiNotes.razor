@@ -1,0 +1,14 @@
+﻿@using Ejafi.Astrometrics.Shared
+@if (!string.IsNullOrWhiteSpace(Poi?.Notes))
+{
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenText><b>Notes</b></RadzenText>
+            <RadzenText>@Poi.Notes</RadzenText>
+        </RadzenColumn>
+    </RadzenRow>
+}
+
+@code {
+    [Parameter] public PointOfInterest? Poi { get; set; }
+}

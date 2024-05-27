@@ -1,0 +1,59 @@
+﻿@using Ejafi.Astrometrics.Shared
+@using Ejafi.Astrometrics.Web.Services.PointsOfInterest
+@inject IPointsOfInterestService PoiService
+
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+    @if (Poi != PoiService.DistanceTarget)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.NoWrap">
+            <RadzenText TagName="TagName.Span" class="mb-0 poi-coordinates poi-distance-magnitude">
+                @FormatDistance(_targetDistance.Magnitude) @_targetDistance.Units
+            </RadzenText>
+            <div class="poi-distance-arrow"></div>
+            <RadzenText TagName="TagName.Span" class="mb-0 poi-distance-target poi-name">
+                @PoiService.DistanceTarget.Name
+            </RadzenText>
+        </RadzenStack>
+    }
+    else
+    {
+        <RadzenText>Current Target</RadzenText>
+    }
+
+    <RadzenButton ButtonStyle="@_targetButtonStyle"
+                  Icon="my_location"
+                  Click="@SetDistanceTarget" />
+</RadzenRow>
+
+@code {
+    [Parameter] public required PointOfInterest Poi { get; set; }
+
+    private SpaceCoordinate.Distance _targetDistance = new(0, "KM");
+    private ButtonStyle _targetButtonStyle = ButtonStyle.Light;
+
+    protected override void OnInitialized()
+    {
+        PoiService.DistanceTargetChanged += PoiServiceOnDistanceTargetChanged;
+        PoiServiceOnDistanceTargetChanged(PoiService.DistanceTarget);
+    }
+
+    public void Dispose()
+    {
+        PoiService.DistanceTargetChanged -= PoiServiceOnDistanceTargetChanged;
+    }
+
+    private void PoiServiceOnDistanceTargetChanged(PointOfInterest obj)
+    {
+        CalculateDistance(PoiService.DistanceTarget, Poi);
+        _targetButtonStyle = PoiService.DistanceTarget.Coordinate == Poi.Coordinate
+            ? ButtonStyle.Success
+            : ButtonStyle.Light;
+        StateHasChanged();
+    }
+    private void SetDistanceTarget() => PoiService.SetDistanceTarget(Poi);
+
+    private void CalculateDistance(PointOfInterest a, PointOfInterest b) =>
+        _targetDistance = a.Coordinate.CalculateDistance(b.Coordinate);
+
+    private string FormatDistance(double distance) => $"{Math.Round(distance, 2):N2}";
+}

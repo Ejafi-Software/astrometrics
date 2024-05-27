@@ -1,0 +1,37 @@
+﻿@using Ejafi.Astrometrics.Shared
+@using System.Numerics
+@typeparam TNumber where TNumber: struct, INumber<TNumber>
+
+<RadzenRow class="w-100">
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenFormField Variant="Variant.Filled" Text="Galactic X" class="w-100">
+            <RadzenNumeric ShowUpDown="false" Min="@MinValue" Max="@MaxValue" @bind-Value="@Coordinate.Galactic.X"/>
+        </RadzenFormField>
+        <RadzenFormField Variant="Variant.Filled" Text="Galactic Y" class="w-100">
+            <RadzenNumeric ShowUpDown="false" Min="@MinValue" Max="@MaxValue" @bind-Value="@Coordinate.Galactic.Y"/>
+        </RadzenFormField>
+        <RadzenFormField Variant="Variant.Filled" Text="Galactic Z" class="w-100">
+            <RadzenNumeric ShowUpDown="false" Min="@MinValue" Max="@MaxValue" @bind-Value="@Coordinate.Galactic.Z"/>
+        </RadzenFormField>
+    </RadzenColumn>
+
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenFormField Variant="Variant.Filled" Text="Local X" class="w-100">
+            <RadzenNumeric ShowUpDown="false" Min="@MinValue" Max="@MaxValue" @bind-Value="@Coordinate.Local.X"/>
+        </RadzenFormField>
+        <RadzenFormField Variant="Variant.Filled" Text="Local Y" class="w-100">
+            <RadzenNumeric ShowUpDown="false" Min="@MinValue" Max="@MaxValue" @bind-Value="@Coordinate.Local.Y"/>
+        </RadzenFormField>
+        <RadzenFormField Variant="Variant.Filled" Text="Local Z" class="w-100">
+            <RadzenNumeric ShowUpDown="false" Min="@MinValue" Max="@MaxValue" @bind-Value="@Coordinate.Local.Z"/>
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+@code {
+    [Parameter] public SpaceCoordinate Coordinate { get; set; } = SpaceCoordinate.Zero;
+    [Parameter] public string FieldLabel { get; set; } = "Spatial Coordinate";
+    [Parameter] public decimal? MaxValue { get; set; }
+    [Parameter] public decimal? MinValue { get; set; }
+    //[Parameter] public string? Name { get; set; }
+}

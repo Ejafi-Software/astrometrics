@@ -1,0 +1,112 @@
+﻿@using Ejafi.Astrometrics.Shared
+@using Ejafi.Astrometrics.Web.Services.PointsOfInterest
+@using Ejafi.Astrometrics.Web.Components.Spatial
+
+@inject IPointsOfInterestService PoiService
+
+<RadzenRow>
+    <RadzenRow class="poi-filter-header" AlignItems="AlignItems.Center">
+        <RadzenText TextAlign="TextAlign.Center" class="poi-filter-header-text poi-name">
+            Filter POIs
+        </RadzenText>
+    </RadzenRow>
+    <RadzenRow class="poi-filter-content">
+        <RadzenStack Orientation="Orientation.Vertical" Wrap="FlexWrap.NoWrap">
+            <RadzenRow class="w-100">
+                <RadzenTextBox class="w-100" Placeholder="Name" Trim="true" @bind-Value="@_filterString"/>
+            </RadzenRow>
+            <RadzenRow>
+                <RadzenFormField Text="POI Type">
+                    <RadzenDropDown @bind-Value="@_type" Data="@GetValidPoiTypes()"/>
+                </RadzenFormField>
+                @if (_type == PoiType.Earthlike)
+                {
+                    <RadzenToggleButton Icon="group_off"
+                                        ButtonStyle="ButtonStyle.Light"
+                                        ToggleIcon="group"
+                                        ToggleShade="Shade.Light"
+                                        ToggleButtonStyle="ButtonStyle.Success"
+                                        @bind-Value="@_populated"
+                                        Style="width: auto; height: 100%; aspect-ratio: 1"/>
+                }
+            </RadzenRow>
+            <RadzenFormField Text="Center On">
+                <CoordinateFormField TNumber="long" Coordinate="@_center" FieldLabel="Center On Coordinate" />
+            </RadzenFormField>
+            <RadzenRow class="mt-0 w-100" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center">
+                <RadzenText>Quick Center</RadzenText>
+                <RadzenButton Text="Current Target"
+                              Click="@CenterOnCurrentTarget"
+                              Icon="my_location"
+                              ButtonStyle="ButtonStyle.Light"
+                              Size="ButtonSize.Small"/>
+                <RadzenButton Text="Sgr A*"
+                              Click="@CenterOnSgrA"
+                              Icon="my_location"
+                              ButtonStyle="ButtonStyle.Light"
+                              Size="ButtonSize.Small"/>
+                <RadzenButton Text="Earth"
+                              Click="@CenterOnEarth"
+                              Icon="my_location"
+                              ButtonStyle="ButtonStyle.Light"
+                              Size="ButtonSize.Small"/>
+            </RadzenRow>
+            <RadzenRow>
+                <RadzenFormField Text="Distance From Center Point (LY)" class="w-100">
+                    <RadzenNumeric TValue="long" @bind-Value="@_distance" class="w-100" />
+                </RadzenFormField>
+            </RadzenRow>
+
+            <RadzenRow>
+                <RadzenButton Click="SetPoiFilter" Text="Set Filter"/>
+                <RadzenButton Click="ClearPoiFilter" Text="Clear Filter"/>
+            </RadzenRow>
+        </RadzenStack>
+    </RadzenRow>
+</RadzenRow>
+
+@code {
+    private string _filterString = string.Empty;
+    private PoiType _type = PoiType.All;
+    private long _distance = 50_000;
+    private bool _populated;
+    private SpaceCoordinate _center = SpaceCoordinate.Zero;
+
+    protected override void OnInitialized()
+    {
+        var currentFilter = PoiService.CurrentFilter;
+
+        _filterString = currentFilter.Name;
+        _type = currentFilter.Type;
+        _distance = currentFilter.Distance == long.MaxValue
+            ? 50_000
+            : currentFilter.Distance;
+        _populated = currentFilter.IncludePopulated;
+        _center = currentFilter.CenterPoint;
+    }
+
+    private void SetPoiFilter()
+    {
+        PoiService.SetFilter(new PoiFilter
+        {
+            Name = _filterString.Trim(),
+            Type = _type,
+            Distance = _distance,
+            CenterPoint = _center,
+            IncludePopulated = _populated
+        });
+    }
+
+    private void ClearPoiFilter()
+    {
+        PoiService.ClearFilter();
+
+    }
+
+    private static PoiType[] GetValidPoiTypes() => Enum.GetValues<PoiType>().ToArray();
+
+    private void CenterOnSgrA() => _center = PointOfInterest.SagittariusA.Coordinate;
+    private void CenterOnEarth() => _center = PointOfInterest.Earth.Coordinate;
+
+    private void CenterOnCurrentTarget() => _center = PoiService.DistanceTarget.Coordinate;
+}

@@ -1,0 +1,99 @@
+﻿@using Ejafi.Astrometrics.Shared
+@using Ejafi.Astrometrics.Web.Components.PointsOfInterest
+@using Ejafi.Astrometrics.Web.Services.PointsOfInterest
+
+@inject DialogService DialogService
+@inject IPointsOfInterestService PoiService
+
+<RadzenMenu class="astro-menu" Responsive="true">
+    <RadzenMenuItem Text="Home"
+                    Path="/"
+                    Icon="home"
+                    class="astro-menu-item"/>
+
+    <RadzenMenuItem Text="Add POI"
+                    Click="@ShowAddPoiDialog"
+                    Icon="add"
+                    IconColor="@Colors.SuccessLighter"
+                    class="astro-menu-item"/>
+
+    @if (PoiService.DistanceTarget != PointOfInterest.SagittariusA)
+    {
+        <RadzenMenuItem Text="Clear Distance Target"
+                        Click="@PoiService.ClearDistanceTarget"
+                        Icon="location_disabled"
+                        IconColor="@Colors.DangerLighter" />
+    }
+
+    @if (PoiService.CurrentFilter == PoiFilter.Default)
+    {
+        <RadzenMenuItem Text="Filter POIs"
+                        Click="@ShowFilterDialog"
+                        Icon="filter_list"/>
+    }
+    else
+    {
+        <RadzenMenuItem Text="Modify POI Filter"
+                        Click="@ShowFilterDialog"
+                        Icon="tune"
+                        IconColor="@Colors.WarningDark" />
+        <RadzenMenuItem Text="Clear POI Filter"
+                        Click="@ClearPoiFilter"
+                        Icon="filter_list_off"
+                        IconColor="@Colors.DangerLighter" />
+    }
+</RadzenMenu>
+
+@code
+{
+    private DialogOptions _options = new()
+    {
+        CloseDialogOnOverlayClick = true,
+        ShowTitle = false,
+        CssClass = "poi-dialog"
+    };
+
+    protected override void OnInitialized()
+    {
+        PoiService.DistanceTargetChanged += _ => StateHasChanged();
+        PoiService.PoiFilterClearedAsync += () =>
+        {
+            DialogService.Close();
+            StateHasChanged();
+            return Task.CompletedTask;
+        };
+    }
+
+    private async Task ShowAddPoiDialog()
+    {
+        PoiService.PoiAddedAsync += PoiServiceOnPoiAddedAsync;
+        await DialogService.OpenAsync<AddPoi>("", options: _options);
+    }
+
+    private async Task ShowFilterDialog()
+    {
+        PoiService.PoiFilterChangedAsync += PoiServiceOnPoiFilterChangedAsync;
+        await DialogService.OpenAsync<FilterPoi>("", options: _options);
+    }
+
+    private void ClearPoiFilter()
+    {
+        PoiService.ClearFilter();
+    }
+
+    private Task PoiServiceOnPoiFilterChangedAsync(PoiFilter arg)
+    {
+        DialogService.Close();
+        PoiService.PoiFilterChangedAsync -= PoiServiceOnPoiFilterChangedAsync;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private Task PoiServiceOnPoiAddedAsync(PointOfInterest arg)
+    {
+        DialogService.Close();
+        PoiService.PoiAddedAsync -= PoiServiceOnPoiAddedAsync;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+}
